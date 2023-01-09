@@ -1,23 +1,20 @@
-use std::env;
+mod print;
 
-fn main() -> std::io::Result<()> {
-    let current_dir = env::current_dir()?;
-    println!("Current directory:");
-    println!("{}", current_dir.display());
-    println!();
+use crate::print::print_env;
+use clap::Parser;
 
-    println!("Arguments:");
-    let args: Vec<String> = env::args().collect();
-    for it in args {
-        println!("{}", it);
+#[derive(Parser, Debug)]
+#[clap(version, about)]
+struct Cli {
+    /// Print current directory
+    #[arg(long, short)]
+    print_env: bool,
+}
+
+fn main() {
+    let opt = Cli::parse();
+
+    if opt.print_env {
+        print_env().unwrap();
     }
-    println!();
-
-    println!("Environment variables:");
-    let env_var = env::vars();
-    for (key, value) in env_var {
-        println!("{}={}", key, value);
-    }
-
-    Ok(())
 }
