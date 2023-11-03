@@ -28,21 +28,24 @@ pub(crate) fn print_message(print_to_stderr: bool, print_message_num: i32) -> st
         let out = stderr();
         let out = out.lock();
         let mut out = BufWriter::new(out);
-
-        for _ in 0..print_message_num {
-            out.write_all(b"The quick brown fox jumps over the lazy dog\r\n")?;
-        }
-        out.flush()?;
+        write_message(&mut out, print_message_num)?;
     } else {
         let out = stdout();
         let out = out.lock();
         let mut out = BufWriter::new(out);
-
-        for _ in 0..print_message_num {
-            out.write_all(b"The quick brown fox jumps over the lazy dog\r\n")?;
-        }
-        out.flush()?;
+        write_message(&mut out, print_message_num)?;
     }
 
+    Ok(())
+}
+
+fn write_message<W>(writer: &mut W, print_message_num: i32) -> std::io::Result<()>
+where
+    W: Write + ?Sized,
+{
+    for _ in 0..print_message_num {
+        writer.write_all(b"The quick brown fox jumps over the lazy dog\r\n")?;
+    }
+    writer.flush()?;
     Ok(())
 }
