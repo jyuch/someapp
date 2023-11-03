@@ -8,7 +8,7 @@ use std::process::exit;
 #[derive(Parser, Debug)]
 #[clap(version, about)]
 struct Cli {
-    /// Print current directory
+    /// Print current environment
     #[arg(long, short)]
     print_env: bool,
 
